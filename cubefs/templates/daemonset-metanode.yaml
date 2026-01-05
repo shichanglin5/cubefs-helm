@@ -110,7 +110,7 @@ spec:
               readOnly: true
             - name: cubefs-conf
               mountPath: /cfs/conf
-            {{- if $.Values.path.log }}
+            {{- if or $.Values.meta.path.log $.Values.path.log }}
             - name: pod-log-path
               mountPath: /cfs/logs
               readOnly: false

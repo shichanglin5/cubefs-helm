@@ -1,13 +1,13 @@
 # Select which component to install
 component:
   master: true
-  datanode: true
   metanode: true
-  objectnode: true
-  client: true
-  csi: true
-  monitor: true
-  ingress: true
+  datanode: false
+  objectnode: false
+  client: false
+  csi: false
+  monitor: false
+  ingress: false
   blobstore_clustermgr: false
   blobstore_blobnode: false
   blobstore_proxy: false
@@ -55,6 +55,7 @@ master:
   # NodeSelector
   nodeSelector:
     "component.cubefs.io/master": "enabled"
+  path.log: /data/logs/infss.cubefs.master
   tolerations: [ ]
   host: master.cubefs.com
   log_level: error
@@ -80,6 +81,7 @@ metanode:
   # NodeSelector for metanode daemonset
   nodeSelector:
     "component.cubefs.io/metanode": "enabled"
+  path.log: /data/logs/infss.cubefs.meta
   tolerations: [ ]
   log_level: error
   # Total memory metanode can use, recommended to be configured
