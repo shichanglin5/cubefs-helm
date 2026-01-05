@@ -6,12 +6,23 @@ apiVersion: v1
 kind: Service
 metadata:
   name: master-service
-  
+  labels:
+{{ tuple $envAll .Release.Namespace "master" | include "helm-toolkit.metadata_labels" | indent 4 }}
+
 spec:
   ports:
     - port: {{ .Values.master.port }}
       protocol: TCP
       targetPort: {{ .Values.master.port }}
+      name: port
+    - port: {{ .Values.master.prof }}
+      protocol: TCP
+      targetPort: {{ .Values.master.prof }}
+      name: prof
+    - port: {{ .Values.master.exporter_port }}
+      protocol: TCP
+      targetPort: {{ .Values.master.exporter_port }}
+      name: metrics
   selector:
 {{ tuple $envAll .Release.Namespace "master" | include "helm-toolkit.metadata_labels" | indent 4 }}
 {{ end }}

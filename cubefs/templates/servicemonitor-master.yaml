@@ -1,0 +1,22 @@
+{{- if and .Values.component.master (default true .Values.prometheus.serviceMonitor.enabled) }}
+{{- $envAll := . }}
+
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: cubefs-master
+  labels:
+{{ tuple $envAll .Release.Namespace "master" | include "helm-toolkit.metadata_labels" | indent 4 }}
+
+spec:
+  selector:
+    matchLabels:
+{{ tuple $envAll .Release.Namespace "master" | include "helm-toolkit.metadata_labels" | indent 6 }}
+  endpoints:
+    - port: metrics
+      interval: 15s
+      path: /metrics
+
+{{ end }}
+

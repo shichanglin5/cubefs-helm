@@ -1,0 +1,39 @@
+{{- if .Values.component.metanode }}
+{{- $envAll := . }}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: metanode-service
+  labels:
+{{ tuple $envAll .Release.Namespace "metanode" | include "helm-toolkit.metadata_labels" | indent 4 }}
+
+spec:
+  clusterIP: None
+  ports:
+    - port: {{ .Values.metanode.port }}
+      protocol: TCP
+      targetPort: {{ .Values.metanode.port }}
+      name: port
+    - port: {{ .Values.metanode.prof }}
+      protocol: TCP
+      targetPort: {{ .Values.metanode.prof }}
+      name: prof
+    - port: {{ .Values.metanode.raft_heartbeat }}
+      protocol: TCP
+      targetPort: {{ .Values.metanode.raft_heartbeat }}
+      name: raft-heartbeat
+    - port: {{ .Values.metanode.raft_replica }}
+      protocol: TCP
+      targetPort: {{ .Values.metanode.raft_replica }}
+      name: raft-replica
+    - port: {{ .Values.metanode.exporter_port }}
+      protocol: TCP
+      targetPort: {{ .Values.metanode.exporter_port }}
+      name: metrics
+  selector:
+{{ tuple $envAll .Release.Namespace "metanode" | include "helm-toolkit.metadata_labels" | indent 4 }}
+
+{{ end }}
+
