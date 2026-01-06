@@ -73,6 +73,8 @@ spec:
               value: {{ include "cubefs.master.address.array" . | quote }}
             - name: CBFS_MASTER_TOTAL_MEM
               value: {{ .Values.metanode.total_mem | quote }}
+            - name: CBFS_MASTER_MEM_RATIO
+              value: {{ .Values.metanode.mem_ratio | quote }}
             - name: CBFS_CONSUL_ADDR
               value: {{ tuple $envAll | include "cubefs.monitor.consul.url" | quote }}
           volumeMounts:
@@ -110,7 +112,7 @@ spec:
               readOnly: true
             - name: cubefs-conf
               mountPath: /cfs/conf
-            {{- if or $.Values.meta.path.log $.Values.path.log }}
+            {{- if or $.Values.metanode.path.log $.Values.path.log }}
             - name: pod-log-path
               mountPath: /cfs/logs
               readOnly: false
@@ -132,10 +134,10 @@ spec:
             defaultMode: 0555
         - name: cubefs-conf
           emptyDir: { }
-        {{- if $.Values.path.log }}
+        {{- if or $.Values.metanode.path.log $.Values.path.log }}
         - name: pod-log-path
           hostPath:
-            path: {{ $.Values.path.log }}
+            path: {{ or $.Values.metanode.path.log $.Values.path.log }}
         {{- end }}
         {{- if $.Values.path.data }}
         - name: pod-data-path
