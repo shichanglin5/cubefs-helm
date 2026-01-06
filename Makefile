@@ -7,3 +7,15 @@ lint:
 	helm lint ./cubefs
 
 .PHONY: package lint
+
+helm-deploy-test:
+	helm upgrade --install --create-namespace \
+	  -n cubefs-dev cubefs ./cubefs \
+	  --kubeconfig /home/lhhdz/.kube/config-test \
+	  -f ./values-overrides-test.yaml
+
+helm-deploy-prod-th:
+	helm upgrade --install --create-namespace \
+	  -n cubefs-dev cubefs ./cubefs \
+	  --kubeconfig /home/lhhdz/.kube/config-prod-th \
+	  -f ./values-overrides-prod.yaml

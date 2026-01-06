@@ -1,8 +1,8 @@
 # Select which component to install
 component:
   master: true
-  datanode: false
   metanode: true
+  datanode: false
   objectnode: false
   client: false
   csi: false
@@ -15,15 +15,29 @@ component:
   blobstore_access: false
 
 image:
-  server: docker.17usoft.com/lhhdz/cubefs/cfs-server:v3.5.0
+  server: docker.17usoft.com/lhhdz/cubefs/cfs-server:dev
 
 master:
-  host: master.cubefs.com
-  log_level: warn
+  # The replicas of master component, at least 3, recommend to be an odd number
+  replicas: 3
   # Cluster name
-  cluster: dev
+  cluster: jfscubefs-dev
+  # NodeSelector
+  nodeSelector:
+    "component.cubefs.io/master": "enabled"
+  path.log: /data/logs/infss.cubefs.master
+  tolerations: [ ]
+  host: master.cubefs.com
+  log_level: error
+  retain_logs: 2000
+  # Master service http port
+  port: 17010
+  # Master golang pprof port
+  prof: 17020
+  exporter_port: 9500
   # Reserved memory in bytes for each metanode, if available memory less than this value, the metanode will be unwritable
   metanode_reserved_mem: "67108864"
+  legacy_data_media_type: 1
   resources:
     enabled: false
     requests:
@@ -32,33 +46,32 @@ master:
     limits:
       memory: "32Gi"
       cpu: "8000m"
-  # The replicas of master component, at least 3, recommend to be an odd number
-  replicas: 3
 
 metanode:
   # NodeSelector for metanode daemonset
   nodeSelector:
     "component.cubefs.io/metanode": "enabled"
+  path.log: /data/logs/infss.cubefs.meta
   tolerations: [ ]
-  log_level: warn
-  # Total memory metanode can use （256GiB）, recommended to be configured
+  log_level: error
+  # Total memory metanode can use, recommended to be configured
   # as 80% of physical machine memory
   total_mem: "26843545600"
+  port: 17210
+  prof: 17220
+  raft_heartbeat: 17230
+  raft_replica: 17240
+  exporter_port: 9510
   resources:
     enabled: true
     requests:
       memory: "32Gi"
       cpu: "2000m"
     limits:
-      memory: "128Gi"
+      memory: "256Gi"
       cpu: "8000m"
   # Similar to datanode.config_override, all the config
   # listed here will be merge into metanode config file.
   config_override: |
     {
     }
-
-consul:
-  port: 8500
-  replicas: 1
-  external_address: ""
