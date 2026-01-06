@@ -59,6 +59,7 @@ metanode:
   # Total memory metanode can use, recommended to be configured
   # as 80% of physical machine memory
   total_mem: "26843545600"
+  mem_ratio: "50"
   port: 17210
   prof: 17220
   raft_heartbeat: 17230
