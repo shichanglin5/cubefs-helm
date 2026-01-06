@@ -58,6 +58,8 @@ master:
   tolerations: [ ]
   host: master.cubefs.com
   log_level: error
+  path:
+    log: ''
   retain_logs: 2000
   # Master service http port
   port: 17010
@@ -82,9 +84,12 @@ metanode:
     "component.cubefs.io/metanode": "enabled"
   tolerations: [ ]
   log_level: error
+  path:
+    log: ''
   # Total memory metanode can use, recommended to be configured
   # as 80% of physical machine memory
   total_mem: "26843545600"
+  mem_ratio: "70"
   port: 17210
   prof: 17220
   raft_heartbeat: 17230

@@ -1,4 +1,4 @@
-{{- if and .Values.component.metanode (default true .Values.prometheus.serviceMonitor.enabled) }}
+{{- if .Values.component.metanode }}
 {{- $envAll := . }}
 
 ---

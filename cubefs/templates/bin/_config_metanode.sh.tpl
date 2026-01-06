@@ -14,6 +14,7 @@ jq -n \
   --arg exporterPort "$CBFS_METANODE_EXPORTER_PORT" \
   --arg masterAddrs "$CBFS_MASTER_ADDRS" \
   --arg totalMem "$CBFS_MASTER_TOTAL_MEM" \
+  --arg memRatio "$CBFS_MASTER_MEM_RATIO" \
   --arg consulAddr "$CBFS_CONSUL_ADDR" \
     '{
      "role": "metanode",

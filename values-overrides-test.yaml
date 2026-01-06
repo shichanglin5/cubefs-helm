@@ -15,7 +15,7 @@ component:
 
 image:
   server: docker.17usoft.com/lhhdz/cubefs/cfs-server:dev
-
+  pull_policy: "Always"
 master:
   # The replicas of master component, at least 3, recommend to be an odd number
   replicas: 3
@@ -24,7 +24,8 @@ master:
   # NodeSelector
   nodeSelector:
     "component.cubefs.io/master": "enabled"
-  path.log: /data/logs/infss.cubefs.master
+  path:
+    log: /data/logs/infss.cubefs.master
   tolerations: [ ]
   host: master.cubefs.com
   log_level: error
@@ -50,7 +51,8 @@ metanode:
   # NodeSelector for metanode daemonset
   nodeSelector:
     "component.cubefs.io/metanode": "enabled"
-  path.log: /data/logs/infss.cubefs.meta
+  path:
+    log: /data/logs/infss.cubefs.meta
   tolerations: [ ]
   log_level: error
   # Total memory metanode can use, recommended to be configured
