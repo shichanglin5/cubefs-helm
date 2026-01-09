@@ -5,6 +5,19 @@ export LC_ALL=C
 
 echo "before prepare config..."
 
+# 清除可能的前后空格，确保正确的分割
+CLEAN_ADDRS=$(echo "$CBFS_MASTER_ADDRS" | tr -d '[:space:]')
+
+jq -n \
+  --arg masterAddr "$CLEAN_ADDRS" \
+  '{
+      "masterAddr": ($masterAddr | split(",") | map(select(. != ""))),
+      "timeout": 60
+    }' > /cfs/conf/cli.json
+
+cat /cfs/conf/cli.json
+
+
 jq -n \
   --arg volName "$CBFS_CLIENT_VOL_NAME" \
   --arg owner "$CBFS_CLIENT_OWNER" \
