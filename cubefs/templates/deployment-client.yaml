@@ -19,6 +19,10 @@ spec:
       labels:
 {{ tuple $envAll .Release.Namespace "client" | include "helm-toolkit.metadata_labels" | indent 8 }}
     spec:
+    {{- with .Values.client.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
       initContainers:
         - name: check-master-service
           image: {{ $.Values.image.client }}

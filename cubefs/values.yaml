@@ -50,6 +50,7 @@ path:
 master:
   # The replicas of master component, at least 3, recommend to be an odd number
   replicas: 3
+  hostNetwork: true
   # Cluster name
   cluster: my-cluster
   # NodeSelector
@@ -79,6 +80,7 @@ master:
       cpu: "8000m"
 
 metanode:
+  hostNetwork: true
   # NodeSelector for metanode daemonset
   nodeSelector:
     "component.cubefs.io/metanode": "enabled"
@@ -110,6 +112,7 @@ metanode:
     }
 
 datanode:
+  hostNetwork: true
   # NodeSelector for datanode daemonset
   nodeSelector:
     "component.cubefs.io/datanode": "enabled"
@@ -186,6 +189,7 @@ client:
   log_level: error
   exporter_port: 9530
   prof: 17410
+  nodeSelector: ~
   resources:
     enabled: false
     requests:

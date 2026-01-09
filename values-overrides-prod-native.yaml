@@ -1,0 +1,89 @@
+# Select which component to install
+component:
+  master: true
+  metanode: true
+  datanode: true
+  objectnode: false
+  client: true
+  csi: false
+  monitor: false
+  ingress: false
+  blobstore_clustermgr: false
+  blobstore_blobnode: false
+  blobstore_proxy: false
+  blobstore_scheduler: false
+  blobstore_access: false
+path:
+  data: /var/lib/cubefs-native
+image:
+  server: docker.17usoft.com/lhhdz/cubefs/cfs-server:v3.5.3
+  client: docker.17usoft.com/lhhdz/cubefs/cfs-client:v3.5.3-bench
+  pullPolicy: "Always"
+master:
+  # The replicas of master component, at least 3, recommend to be an odd number
+  replicas: 3
+  hostNetwork: false
+  # Cluster name
+  cluster: jfscubefs-native
+  # NodeSelector
+  nodeSelector:
+    "component.cubefs.io/master": "enabled"
+  path:
+    log: /data/logs/infss.cubefs.master-native
+  tolerations: [ ]
+  host: master.cubefs.com
+  log_level: error
+  retain_logs: 2000
+  # Master service http port
+  port: 18010
+  # Master golang pprof port
+  prof: 18020
+  exporter_port: 9800
+  # Reserved memory in bytes for each metanode, if available memory less than this value, the metanode will be unwritable
+  metanode_reserved_mem: "67108864"
+  legacy_data_media_type: 1
+  resources:
+    enabled: false
+    requests:
+      memory: "8Gi"
+      cpu: "2000m"
+    limits:
+      memory: "32Gi"
+      cpu: "8000m"
+
+metanode:
+  hostNetwork: false
+  # NodeSelector for metanode daemonset
+  nodeSelector:
+    "component.cubefs.io/metanode": "enabled"
+  path:
+    log: /data/logs/infss.cubefs.meta-native
+  tolerations: [ ]
+  log_level: error
+  # Total memory metanode can use, recommended to be configured
+  # as 80% of physical machine memory
+  total_mem: "26843545600"
+  mem_ratio: "50"
+  port: 18210
+  prof: 18220
+  raft_heartbeat: 18230
+  raft_replica: 18240
+  exporter_port: 9810
+  resources:
+    enabled: true
+    requests:
+      memory: "32Gi"
+      cpu: "2000m"
+    limits:
+      memory: "32Gi"
+      cpu: "8000m"
+  # Similar to datanode.config_override, all the config
+  # listed here will be merge into metanode config file.
+  config_override: |
+    {
+    }
+datanode:
+  hostNetwork: false
+client:
+  nodeSelector:
+    "component.cubefs.io/client": "enabled"

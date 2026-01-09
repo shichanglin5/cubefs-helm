@@ -46,7 +46,7 @@ spec:
                     values:
                       - "master"
               topologyKey: kubernetes.io/hostname
-      hostNetwork: true
+      hostNetwork: {{.Values.master.hostNetwork }}
       priorityClassName: cubefs-high-priority
       hostPID: false
       dnsPolicy: ClusterFirstWithHostNet
