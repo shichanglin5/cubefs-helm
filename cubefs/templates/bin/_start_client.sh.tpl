@@ -4,7 +4,7 @@
 
 mkdir -p /cfs/mnt
 
-# 如果 /cfs/conf/cli.json 存在，那么移动到 ~/.cfs-cli.json
+# mv /cfs/conf/cli.json  ~/.cfs-cli.json
 if [ -f /cfs/conf/cli.json ]; then
     mv /cfs/conf/cli.json ~/.cfs-cli.json
 fi

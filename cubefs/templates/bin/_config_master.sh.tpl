@@ -8,6 +8,18 @@ CBFS_ID=""
 CBFS_HOSTNAME_INDEX=`echo $POD_NAME | awk -F '-' '{print $2}'`
 CBFS_ID=$(($CBFS_HOSTNAME_INDEX+1))
 
+# cfs-cli
+CLEAN_ADDRS=$(echo "$CBFS_MASTER_ADDRS" | tr -d '[:space:]')
+jq -n \
+  --arg masterAddr "$CLEAN_ADDRS" \
+  '{
+      "masterAddr": ($masterAddr | split(",") | map(select(. != ""))),
+      "timeout": 60
+    }' > /cfs/conf/cli.json
+
+cat /cfs/conf/cli.json
+
+# cfs-master
 jq -n \
   --arg clusterName "$CBFS_MASTER_CLUSTER" \
   --arg id $CBFS_ID \

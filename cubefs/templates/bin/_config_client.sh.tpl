@@ -5,9 +5,8 @@ export LC_ALL=C
 
 echo "before prepare config..."
 
-# 清除可能的前后空格，确保正确的分割
+# cfs-cli
 CLEAN_ADDRS=$(echo "$CBFS_MASTER_ADDRS" | tr -d '[:space:]')
-
 jq -n \
   --arg masterAddr "$CLEAN_ADDRS" \
   '{
@@ -17,7 +16,7 @@ jq -n \
 
 cat /cfs/conf/cli.json
 
-
+# cfs-client (fuse)
 jq -n \
   --arg volName "$CBFS_CLIENT_VOL_NAME" \
   --arg owner "$CBFS_CLIENT_OWNER" \

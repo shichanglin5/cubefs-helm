@@ -13,7 +13,8 @@ component:
   blobstore_proxy: false
   blobstore_scheduler: false
   blobstore_access: false
-
+log:
+  do_not_redirect_std: true
 image:
   server: docker.17usoft.com/lhhdz/cubefs/cfs-server:dev
   pull_policy: "Always"

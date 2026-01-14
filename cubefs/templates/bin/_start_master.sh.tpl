@@ -1,6 +1,11 @@
 #!/bin/bash
 # set -ex
 
+# mv /cfs/conf/cli.json  ~/.cfs-cli.json
+if [ -f /cfs/conf/cli.json ]; then
+    mv /cfs/conf/cli.json ~/.cfs-cli.json
+fi
+
 mkdir -p /cfs/data/master/raft
 mkdir -p /cfs/data/master/rocksdbstore
 
