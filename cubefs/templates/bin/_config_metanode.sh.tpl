@@ -35,7 +35,11 @@ jq -n \
  }' | jq '.masterAddr |= split(",")' > /cfs/conf/metanode.json
 
 # merge the override config
-jq -s ".[0] + .[1].\"$CBFS_METANODE_LOCALIP\"" /cfs/conf/metanode.json /cfs/conf-override/metanode.json > tmp.json
+# 1. merge global keys (non-object top-level values apply to all nodes)
+# 2. merge per-node keys (keyed by localIP, for node-specific overrides)
+jq -s '.[0] + (.[1] | to_entries | map(select(.value | type != "object")) | from_entries)' /cfs/conf/metanode.json /cfs/conf-override/metanode.json > tmp.json
+mv tmp.json /cfs/conf/metanode.json
+jq -s ".[0] + (.[1].\"$CBFS_METANODE_LOCALIP\" // {})" /cfs/conf/metanode.json /cfs/conf-override/metanode.json > tmp.json
 mv tmp.json /cfs/conf/metanode.json
 
 cat /cfs/conf/metanode.json
