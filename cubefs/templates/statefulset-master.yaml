@@ -124,6 +124,11 @@ spec:
               mountPath: /cfs/data
               readOnly: false
             {{- end }}
+            {{- if $.Values.path.raft }}
+            - name: pod-raft-path
+              mountPath: /cfs/raft
+              readOnly: false
+            {{- end }}
 {{ tuple $envAll $envAll.Values.master.resources | include "helm-toolkit.snippets.kubernetes_resources" | indent 10 }}
       volumes:
         - name: cubefs-bin
@@ -142,8 +147,12 @@ spec:
           hostPath:
             path: {{ $.Values.path.data }}
         {{- end }}
+        {{- if $.Values.path.raft }}
+        - name: pod-raft-path
+          hostPath:
+            path: {{ $.Values.path.raft }}
+        {{- end }}
 {{ end }}
-
 
 
 

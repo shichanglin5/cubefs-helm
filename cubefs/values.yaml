@@ -43,9 +43,10 @@ log:
 # store data,log and other data, these directory will be
 #  mounted from host to container using hostPath
 path:
-  data: /var/lib/cubefs
-  log: /var/log/cubefs
-  monitor: /var/lib/cubefs_prometheus
+  data: /var/lib/cubefs/data
+  raft: /var/lib/cubefs/raft
+  log: /var/log/cubefs/logs
+  monitor: /var/lib/cubefs/prometheus
 
 master:
   # The replicas of master component, at least 3, recommend to be an odd number

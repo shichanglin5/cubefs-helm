@@ -45,7 +45,7 @@ jq -n \
     "retainLogs": $retainLogs,
     "logDir": "/cfs/logs",
     "logLevel": $logLevel,
-    "walDir": "/cfs/data/master/raft",
+    "walDir": "/cfs/raft/master",
     "storeDir": "/cfs/data/master/rocksdbstore",
     "consulAddr": $consulAddr,
     "exporterPort": $exporterPort,

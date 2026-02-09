@@ -122,7 +122,7 @@ spec:
               mountPath: /cfs/data
               readOnly: false
             {{- end }}
-            {{- if $.Values.metanode.path.raft }}
+            {{- if $.Values.path.raft }}
             - name: pod-raft-path
               mountPath: /cfs/raft
               readOnly: false
@@ -149,10 +149,10 @@ spec:
           hostPath:
             path: {{ $.Values.path.data }}
         {{- end }}
-        {{- if $.Values.metanode.path.raft }}
+        {{- if $.Values.path.raft }}
         - name: pod-raft-path
           hostPath:
-            path: {{ $.Values.metanode.path.raft }}
+            path: {{ $.Values.path.raft }}
         {{- end }}
 {{ end }}
 
