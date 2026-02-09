@@ -33,16 +33,13 @@ function check_status() {
 }
 
 function create_vol {
-#  curl -v "http://10.196.30.231:8080/admin/createVol?name=test&capacity=10&owner=cfs&mpCount=3"
-# {"code":1,"msg":"action[createVol], clusterID[test] name:test, err:action[doCreateVol], clusterID[test] name:test, err:duplicate vol  ","data":null}
-# {"code":0,"msg":"success","data":"create vol[test] successfully, has allocate [10] data partitions"}
   create_result=$(curl $CREATE_VOL_URL)
   test -z $create_result && echo SERVICE_NOT_UNAVAILABLE || echo $create_result | jq .code
 }
 
 function start_check {
   check_status "MetaNode"
-  check_status "DataNode"
+  # check_status "DataNode"
 
   create_status=$(create_vol)
   if [[ "X"$create_status == "X"0 || "X"$create_status == "X"1 ]];then

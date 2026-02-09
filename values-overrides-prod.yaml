@@ -4,7 +4,7 @@ component:
   metanode: true
   datanode: false
   objectnode: false
-  client: true
+  client: false
   csi: false
   monitor: false
   ingress: false

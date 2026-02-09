@@ -9,11 +9,13 @@ CBFS_HOSTNAME_INDEX=`echo $POD_NAME | awk -F '-' '{print $2}'`
 CBFS_ID=$(($CBFS_HOSTNAME_INDEX+1))
 
 # cfs-cli
-CLEAN_ADDRS=$(echo "$CBFS_MASTER_ADDRS" | tr -d '[:space:]')
+# 解析 CBFS_MASTER_PEERS : 1:master-0.master-service:17010,2:master-1.master-service:17010,3:master-2.master-service:17010 为数组形式:
+# ["master-0.master-service:17010","master-1.master-service:17010","master-2.master-service:17010"]
+CLEAN_ADDRS=$(echo "$CBFS_MASTER_PEERS" | tr -d '[:space:]' | sed 's/[0-9]*:\([^,]*\)/\1/g')
 jq -n \
   --arg masterAddr "$CLEAN_ADDRS" \
   '{
-      "masterAddr": ($masterAddr | split(",") | map(select(. != ""))),
+      "masterAddr": ($masterAddr | split(",") | map(select(. != ""))), 
       "timeout": 60
     }' > /cfs/conf/cli.json
 
