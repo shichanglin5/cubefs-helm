@@ -16,9 +16,9 @@ component:
 log:
   do_not_redirect_std: true
 path:
-  data: /data_sdc/cubefs/data
-  log: /data/cubefs/logs
-  raft: /data/cubefs/raft
+  data: /mnt/ramdisk/cubefs/data
+  log: /cubefs/logs
+  raft: /mnt/ramdisk/cubefs/raft
 image:
   server: docker.17usoft.com/lhhdz/cubefs/cfs-server:dev
   client: docker.17usoft.com/lhhdz/cubefs/cfs-client:dev
@@ -78,7 +78,7 @@ metanode:
       cpu: "2000m"
     limits:
       memory: "256Gi"
-      cpu: 32
+      cpu: ~
   # 覆盖 raftDir 到独立磁盘挂载点
   config_override: |
     {

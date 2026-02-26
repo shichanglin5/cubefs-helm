@@ -87,7 +87,11 @@ app.kubernetes.io/version: {{ $envAll.Chart.Version }}
 {{- if $component.enabled -}}
 resources:
   limits:
+{{- if hasKey $component.limits "cpu" }}
+{{- if $component.limits.cpu }}
     cpu: {{ $component.limits.cpu | quote }}
+{{- end }}
+{{- end }}
     memory: {{ $component.limits.memory | quote }}
   requests:
     cpu: {{ $component.requests.cpu | quote }}
